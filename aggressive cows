@@ -1,0 +1,47 @@
+import java.util.*;
+public class Main
+{
+    
+   static	boolean Possible(int x,int a[],int c,int n)
+	{
+		int lastplaced=a[0];
+		int cn=1;
+		for(int i=1;i<n;i++)
+		{
+			if(a[i]-lastplaced>=x)
+			{
+				cn++;lastplaced=a[i];
+			}
+		}
+		if(cn>=c) 
+		return true;
+		else return false;
+	}
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		int T=sc.nextInt();
+		while(T>0)
+		{
+		    T--;
+			int n=sc.nextInt();
+			int C=sc.nextInt();
+			int a[]=new int[n];
+			for(int i=0;i<n;i++)
+			{
+				a[i]=sc.nextInt();
+			}
+			Arrays.sort(a);
+			int high=a[n - 1] - a[0];
+			int low=1;
+			while(low<=high)
+			{
+				int mid=low+(high-low)/2;
+				if(Possible(mid,a,C,n))
+				low=mid+1;
+				else 
+				high=mid-1;
+			}
+			System.out.println(high);
+		}
+	}
+}
