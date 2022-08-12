@@ -1,6 +1,6 @@
 class Solution {
     public boolean lemonadeChange(int[] bills) {
-       int save[]=new int[3];
+       int save[]=new int[2];
         
         for(int i=0;i<bills.length;i++)
         {
@@ -15,11 +15,11 @@ class Solution {
             {
                 if(save[1]>=1 && save[0]>=1)
                 {
-                    save[1]--;save[0]--;save[2]++;
+                    save[1]--;save[0]--;
                 }
                 else if(save[0]>=3)
                 {
-                    save[0]-=3;save[2]++;
+                    save[0]-=3;
                 }
                 else return false;
             }
