@@ -1,22 +1,19 @@
 class Solution {
-    public int firstUniqChar(String s) 
+    public int firstUniqChar(String s) {
+        HashMap<Character,Integer> set=new HashMap<>();
+        for(int i=0;i<s.length();i++)
         {
-            HashMap<Character,Integer> map= new HashMap<>();
-            for(int i=0;i<s.length();i++)
-            {
-                if(map.containsKey(s.charAt(i)))
-                {
-                    map.put(s.charAt(i),map.get(s.charAt(i))+1);
-                    
-                }
-                else
-                  map.put(s.charAt(i),1);  
-}
-             for(int i=0;i<s.length();i++)
-             {
-                int x=map.get(s.charAt(i)); 
-                 if(x==1) return i;
-             }
-            return -1;
+            if(set.containsKey(s.charAt(i)))
+                set.put(s.charAt(i),set.get(s.charAt(i))+1);
+            else 
+                set.put(s.charAt(i),1);
+                
         }
-    }   
+        for(int i=0;i<s.length();i++)
+        {
+            if(set.get(s.charAt(i))==1)
+                return i;
+        }
+        return -1;
+    }
+}
