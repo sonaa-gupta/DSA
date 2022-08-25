@@ -14,17 +14,35 @@
  * }
  */
 class Solution {
-    HashSet<Integer> hs=new HashSet<>();
+   TreeNode head,tail;
     public boolean findTarget(TreeNode root, int k) {
-        if(root!=null)
+       convert(root);
+        int sum=0;
+        while(head!=tail)
         {
-            if(hs.contains(k-root.val))
+            if(head.val+tail.val==k)
                 return true;
-            else hs.add(root.val);
-            return findTarget(root.left,k) || findTarget(root.right,k);
+            else if(head.val+tail.val<k)
+                head=head.right;
+            else tail=tail.left;
         }
         return false;
         
         
+        
+    }
+    void convert(TreeNode root)
+    {
+        if(root==null) return;
+        convert(root.left);
+        if(head==null)
+            head=root;
+        else 
+        {
+            root.left=tail;
+            tail.right=root;
+        }
+        tail=root;
+        convert(root.right);
     }
 }
