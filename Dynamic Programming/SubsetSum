@@ -1,0 +1,93 @@
+// approach 1 Recursive solution
+class Solution {
+
+    static Boolean isSubsetSum(int arr[], int sum) {
+        // code here
+        if(arr.length==1) return arr[0]==sum;
+        return isSubset(arr, arr.length-1,sum);
+    }
+    static Boolean isSubset(int arr[],int ind, int target)
+    {
+        if(target==0) return true;
+        if(ind==0) return arr[ind]==target;
+        boolean notPick = isSubset(arr, ind-1, target);
+        boolean pick= false;
+        if(arr[ind]<=target)
+        pick= isSubset(arr, ind-1, target-arr[ind]);
+        return pick || notPick;
+    }
+}
+// approach 2 DP memoisation------
+class Solution {
+
+    static Boolean isSubsetSum(int arr[], int sum) {
+        // code here
+        if(arr.length==1) return arr[0]==sum;
+        boolean dp[][]= new boolean [arr.length][sum+1];
+        return isSubset(arr, arr.length-1,sum,dp);
+    }
+    static Boolean isSubset(int arr[],int ind, int target, boolean dp[][])
+    {
+        if(target==0) return true;
+        if(ind==0) return arr[ind]==target;
+        if(dp[ind-1][target]!=false) return dp[ind-1][target];
+        boolean notPick = isSubset(arr, ind-1, target,dp);
+        boolean pick= false;
+        if(arr[ind]<=target)
+        pick= isSubset(arr, ind-1, target-arr[ind],dp);
+        dp[ind][target]= pick || notPick;
+        return dp[ind][target];
+    }
+}
+// Approach as Tabulation
+class Solution {
+    static Boolean isSubsetSum(int arr[], int sum) {
+        // code here
+        if(arr.length==1) return arr[0]==sum;
+        boolean dp[][] = new boolean [arr.length][sum+1];
+       for(int i=0;i<arr.length;i++)
+       {
+          dp[i][0]= true;
+       }
+       if(arr[0]<=sum) dp[0][arr[0]] = true;
+       for(int i=1;i<arr.length;i++){
+           for(int target=1;target<=sum;target++)
+           {
+               boolean notPick = dp[i-1][target];
+               boolean pick = false;
+               if(arr[i]<=target)
+               pick = dp[i-1][target-arr[i]];
+               dp[i][target]=pick || notPick;
+           }
+       }
+       return dp[arr.length-1][sum];
+    }
+}
+//Space optimization
+
+class Solution {
+
+    static Boolean isSubsetSum(int arr[], int sum) {
+        // code here
+        if(arr.length==1) return arr[0]==sum;
+        boolean prev[] = new boolean[sum+1];//making first row of prev and curr as zero as in dp table we are maiking 1st column of each row zero
+        boolean curr[] = new boolean[sum+1];
+        prev[0]=curr[0]=true;
+        
+       
+       if(arr[0]<=sum) prev[arr[0]] = true;
+       
+       for(int i=1;i<arr.length;i++){
+           for(int target=1;target<=sum;target++)
+           {
+               boolean notPick = prev[target];
+               boolean pick = false;
+               if(arr[i]<=target)
+               pick = prev[target-arr[i]];
+               curr[target]=pick || notPick;
+           }
+           prev= curr.clone();
+       }
+       return prev[sum];
+    }
+}
