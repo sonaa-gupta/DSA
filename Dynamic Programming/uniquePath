@@ -1,0 +1,65 @@
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int dp[][] = new int[m][n];
+        for(int i=0;i<m;i++)
+        Arrays.fill(dp[i],-1);
+        return countPath(m-1, n-1, dp);
+    }
+    public static int countPath(int row, int col, int[][] dp){
+        if(row==0 && col==0) return 1;
+        else if(row<0 || col<0 ) return 0;
+        if(dp[row][col]!=-1) return dp[row][col];
+        int up = countPath(row-1, col,dp);
+        int left = countPath(row, col-1,dp);
+        return dp[row][col] = up+left;
+    }
+}
+
+//DP Solution 
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int dp[][] = new int[m][n];
+        for(int i=0;i<m;i++)
+        Arrays.fill(dp[i],0);
+
+        dp[0][0] = 1;
+        for(int i=0; i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                 if(i==0 && j==0) continue;
+                int up=0,left=0;
+                if(i>0){  up = dp[i-1][j];}
+                if(j>0){    left = dp[i][j-1];}
+                dp[i][j] = up+left;
+            }
+        }
+        return dp[m-1][n-1];
+    }
+   
+}
+
+space optimization 
+class Solution {
+    public int uniquePaths(int m, int n) {
+     
+        int prev[] = new int[n];
+        int curr[] = new int[n];
+        prev[0]= curr[0]=1;
+
+        for(int i=0; i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                 if(i==0 && j==0) continue;
+                int up=0,left=0;
+                if(i>0){  up = prev[j];}
+                if(j>0){    left = curr[j-1];}
+                curr[j] = up+left;
+            }
+            prev= curr.clone();
+        }
+        return prev[n-1];
+    }
+   
+}
