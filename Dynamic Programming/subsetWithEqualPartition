@@ -1,0 +1,83 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        
+        int total_sum =0;
+        for(int i=0;i<nums.length;i++)
+        total_sum+=nums[i];
+        if(total_sum%2!=0) return false;
+        boolean dp[][]= new boolean [nums.length][(total_sum/2)+1];
+        return isSubset(nums, nums.length-1, total_sum/2, dp);
+    }
+    static boolean isSubset(int[] arr,int ind, int target, boolean dp[][]){
+        if(target==0) return true;
+        if(ind==0)
+        return arr[ind]==target;
+        if(dp[ind][target]!=false) return dp[ind][target];
+        boolean notPick = isSubset(arr, ind-1, target, dp );
+        boolean pick = false;
+        if(arr[ind]<=target)
+         pick = isSubset(arr, ind-1, target-arr[ind], dp );
+        return dp[ind][target] = pick || notPick;
+    }
+    // dp solution Tabulation
+    class Solution {
+    public boolean canPartition(int[] nums) {
+        
+        int total_sum =0;
+        for(int i=0;i<nums.length;i++)
+        total_sum+=nums[i];
+        if(total_sum%2!=0) return false;
+        boolean dp[][]= new boolean [nums.length][(total_sum/2)+1];
+        int sum= total_sum/2;
+        for(int i=0;i<nums.length;i++) dp[i][0] =true; // try to findout target is zero then true for all index arr[i] i=0,1,2,3....
+       if(nums[0]<= sum) dp[0][nums[0]] = true;// condition for ind 0 we make it true where nums[ind]== target where ind==0 so it measn return nums[0]==traget
+
+        for(int i=1;i<nums.length;i++)
+        {
+            for(int target=1; target<= sum; target++)
+            {
+                 boolean notPick =dp[i-1][target];
+                  boolean pick = false;
+             if(nums[i]<=target)
+             pick = dp[i-1][target-nums[i]];
+         dp[i][target] = pick || notPick;
+            }
+        }
+        return dp[nums.length-1][sum];
+    }
+
+}
+
+}
+
+Space optimization--------------------
+class Solution {
+    public boolean canPartition(int[] nums) {
+        
+        int total_sum =0;
+        for(int i=0;i<nums.length;i++)
+        total_sum+=nums[i];
+        if(total_sum%2!=0) return false;
+        int sum= total_sum/2;
+    boolean prev[] = new boolean[sum+1];
+    boolean curr[] = new boolean[sum+1];
+    prev[0]=curr[0]=true;
+    if(nums[0]<=sum) prev[nums[0]] = true;
+
+
+        for(int i=1;i<nums.length;i++)
+        {
+            for(int target=1; target<= sum; target++)
+            {
+                 boolean notPick =prev[target];
+                  boolean pick = false;
+             if(nums[i]<=target)
+             pick = prev[target-nums[i]];
+              curr[target] = pick || notPick;
+            }
+            prev= curr.clone();
+        }
+        return prev[sum];
+    }
+
+}
